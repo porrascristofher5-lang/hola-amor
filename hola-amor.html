@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hola amor</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #130a1e 0%, #2a113b 50%, #1a0826 100%);
+      font-family: 'Georgia', serif;
+      color: #fff;
+      overflow-x: hidden;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Partículas de pétalos lilas */
+    .petals-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .petal {
+      position: absolute;
+      background: linear-gradient(135deg, #b388ff, #7c4dff);
+      border-radius: 15px 0 15px 0;
+      opacity: 0.7;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(105vh) rotate(360deg); opacity: 0.2; }
+    }
+
+    /* INTERFAZ 1: Principal (Ramo, Título y Sobre) */
+    .screen-1 {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 500px;
+      width: 100%;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .screen-1.hidden {
+      opacity: 0;
+      transform: scale(0.9);
+      pointer-events: none;
+      display: none;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      color: #e1bee7;
+      text-shadow: 0 0 12px rgba(179, 136, 255, 0.4);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .bouquet-svg {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 15px;
+      filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.5));
+    }
+
+    /* Sobre Interactivo */
+    .envelope-wrapper {
+      position: relative;
+      width: 260px;
+      height: 170px;
+      background: #4a1c6d;
+      border-radius: 8px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      cursor: pointer;
+      margin-top: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .envelope-wrapper:hover {
+      transform: translateY(-5px);
+    }
+
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 130px solid transparent;
+      border-right: 130px solid transparent;
+      border-top: 95px solid #6a2c91;
+      z-index: 3;
+    }
+
+    .envelope-body {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 130px solid #3a1357;
+      border-right: 130px solid #3a1357;
+      border-bottom: 95px solid #481a6c;
+      border-radius: 0 0 8px 8px;
+      z-index: 2;
+    }
+
+    .seal {
+      position: absolute;
+      top: 75px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #d1c4e9, #b388ff);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      z-index: 4;
+    }
+
+    .hint {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #b388ff;
+      opacity: 0.8;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* INTERFAZ 2: Pantalla de la Carta */
+    .screen-2 {
+      display: none;
+      position: relative;
+      z-index: 10;
+      max-width: 420px;
+      width: 90%;
+      background: #ffffff;
+      color: #2a113b;
+      padding: 30px 25px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    .screen-2.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .screen-2 h2 {
+      font-size: 1.8rem;
+      color: #6a2c91;
+      margin-bottom: 20px;
+      font-family: 'Brush Script MT', cursive, serif;
+    }
+
+    .screen-2 p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .btn-volver {
+      margin-top: 20px;
+      background: #7c4dff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn-volver:hover {
+      background: #651fff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="petals-container" id="petals"></div>
+
+  <!-- Interfaz 1: Ramo y Sobre -->
+  <div class="screen-1" id="screen1">
+    <h1>hola amor</h1>
+
+    <svg class="bouquet-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <path d="M70,140 L130,140 L115,190 L85,190 Z" fill="#4a1c6d" />
+      <path d="M60,120 L140,120 L130,145 L70,145 Z" fill="#6a2c91" />
+      <path d="M90,140 Q100,148 110,140 Q105,155 100,165 Q95,155 90,140 Z" fill="#b388ff" />
+      <path d="M85,120 Q80,80 75,50" stroke="#4caf50" stroke-width="4" fill="none" />
+      <path d="M95,120 Q95,75 95,40" stroke="#388e3c" stroke-width="4" fill="none" />
+      <path d="M105,120 Q105,75 105,40" stroke="#4caf50" stroke-width="4" fill="none" />
+      <path d="M115,120 Q120,80 125,50" stroke="#388e3c" stroke-width="4" fill="none" />
+      <g transform="translate(60, 30)">
+        <path d="M15,30 C0,20 0,0 15,10 C30,0 30,20 15,30 Z" fill="#9c27b0" />
+        <path d="M15,30 C5,15 10,0 15,12 C20,0 25,15 15,30 Z" fill="#ba68c8" />
+      </g>
+      <g transform="translate(80, 15)">
+        <path d="M15,30 C0,20 0,0 15,10 C30,0 30,20 15,30 Z" fill="#7b1fa2" />
+        <path d="M15,30 C5,15 10,0 15,12 C20,0 25,15 15,30 Z" fill="#ab47bc" />
+      </g>
+      <g transform="translate(100, 15)">
+        <path d="M15,30 C0,20 0,0 15,10 C30,0 30,20 15,30 Z" fill="#8e24aa" />
+        <path d="M15,30 C5,15 10,0 15,12 C20,0 25,15 15,30 Z" fill="#ce93d8" />
+      </g>
+      <g transform="translate(120, 30)">
+        <path d="M15,30 C0,20 0,0 15,10 C30,0 30,20 15,30 Z" fill="#6a1b9a" />
+        <path d="M15,30 C5,15 10,0 15,12 C20,0 25,15 15,30 Z" fill="#b388ff" />
+      </g>
+    </svg>
+
+    <div class="envelope-wrapper" onclick="openCarta()">
+      <div class="flap"></div>
+      <div class="envelope-body"></div>
+      <div class="seal">💜</div>
+    </div>
+
+    <p class="hint">✨ Toca el sobre para leer la carta ✨</p>
+  </div>
+
+  <!-- Interfaz 2: Contenido de la Carta -->
+  <div class="screen-2" id="screen2">
+    <p>seras mi conejillo de indias, jajaja.</p>
+    <p>Te amo mucho mucho mucho</p>
+    <button class="btn-volver" onclick="closeCarta()">❤️ Volver</button>
+  </div>
+
+  <script>
+    function openCarta() {
+      document.getElementById('screen1').classList.add('hidden');
+      setTimeout(() => {
+        document.getElementById('screen2').classList.add('active');
+      }, 300);
+    }
+
+    function closeCarta() {
+      document.getElementById('screen2').classList.remove('active');
+      document.getElementById('screen1').classList.remove('hidden');
+    }
+
+    // Generador de pétalos
+    const petalsContainer = document.getElementById('petals');
+    for (let i = 0; i < 20; i++) {
+      const petal = document.createElement('div');
+      petal.classList.add('petal');
+      const size = Math.random() * 12 + 8;
+      petal.style.width = `${size}px`;
+      petal.style.height = `${size * 1.4}px`;
+      petal.style.left = `${Math.random() * 100}%`;
+      petal.style.animationDuration = `${Math.random() * 5 + 5}s`;
+      petal.style.animationDelay = `${Math.random() * 5}s`;
+      petalsContainer.appendChild(petal);
+    }
+  </script>
+</body>
+</html>
